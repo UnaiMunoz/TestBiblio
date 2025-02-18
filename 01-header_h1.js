@@ -13,7 +13,6 @@ class MyTest extends BaseTest
 {
 	async test() {
         // testejem H1 a la home page
-        //////////////////////////////////////////////////////
         var site = process.env.URL;
         await this.driver.get(site + "/admin/login");
         var currentText = await this.driver.findElement(By.tagName("h1")).getText();
@@ -23,8 +22,6 @@ class MyTest extends BaseTest
         console.log("TEST OK");
 	}
 }
-
-// executem el test
 
 (async function test_example() {
 	const test = new MyTest();

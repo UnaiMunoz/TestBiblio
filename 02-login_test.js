@@ -2,6 +2,9 @@ const { BaseTest } = require("./BaseTest.js");
 const { By, until } = require("selenium-webdriver");
 const assert = require('assert');
 
+require('dotenv').config();
+console.log(process.env);
+
 class MyTest extends BaseTest {
     async test() {
         // Navegar a la pàgina de login

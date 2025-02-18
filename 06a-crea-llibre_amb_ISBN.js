@@ -11,9 +11,11 @@ const site_url = process.env.URL;
 const username = process.env.usuari;
 const password = process.env.contrasenya;
 const book_title = process.env.book_title;
+const book_isbn = process.env.book_isbn;
 
 // heredem una classe amb un sol mètode test()
 // emprem this.driver per utilitzar Selenium
+
 
 class MyTest extends BaseTest {
     async test() {
@@ -30,7 +32,17 @@ class MyTest extends BaseTest {
         //  Afegeix llibre
         await this.driver.findElement(By.xpath("//a[@href='/admin/biblio/llibre/add/']")).click();
 
-        await this.driver.findElement(By.name("titol")).sendKeys(book_title);
+        await this.driver.findElement(By.xpath("//a[text()=\"Introdueix manualment l'ISBN\"]")).click();
+
+        await this.driver.sleep(1000);
+        let alert = await this.driver.switchTo().alert();
+
+
+        // Send text to the prompt
+        await alert.sendKeys(book_isbn);
+        // Accept (click OK)
+        await alert.accept();
+        await this.driver.sleep(8000);
         await this.driver.findElement(By.xpath("//input[@value='Desar']")).click();
 
         //  cerrar sessió
@@ -40,6 +52,7 @@ class MyTest extends BaseTest {
         console.log("TEST OK");
     }
 }
+
 
 (async function test_example() {
     const test = new MyTest();

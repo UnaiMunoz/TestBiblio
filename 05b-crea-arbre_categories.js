@@ -10,7 +10,7 @@ console.log(process.env);
 const site_url = process.env.URL;
 const username = process.env.usuari;
 const password = process.env.contrasenya;
-const book_title = process.env.book_title;
+const parent_category = process.env.parent_category;
 
 // heredem una classe amb un sol mètode test()
 // emprem this.driver per utilitzar Selenium
@@ -27,11 +27,14 @@ class MyTest extends BaseTest {
         //  boto send .click()
         await this.driver.findElement(By.xpath("//input[@value='Iniciar sessió']")).click();
 
-        //  Afegeix llibre
-        await this.driver.findElement(By.xpath("//a[@href='/admin/biblio/llibre/add/']")).click();
+        //  Entra a la secció de categories i a la categoria pare que vol esborrar
+        await this.driver.findElement(By.xpath("//a[text()='Categories']")).click();
 
-        await this.driver.findElement(By.name("titol")).sendKeys(book_title);
-        await this.driver.findElement(By.xpath("//input[@value='Desar']")).click();
+        await this.driver.findElement(By.xpath("//a[text()='"+parent_category+"']")).click();
+
+        //  Esborra categoria i el fills relacionats amb aquesta
+        await this.driver.findElement(By.xpath("//a[contains(@class, 'deletelink')]")).click();
+        await this.driver.findElement(By.xpath("//input[@type='submit']")).click();
 
         //  cerrar sessió
         await this.driver.sleep(1000);

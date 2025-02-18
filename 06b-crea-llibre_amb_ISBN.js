@@ -11,6 +11,7 @@ const site_url = process.env.URL;
 const username = process.env.usuari;
 const password = process.env.contrasenya;
 const book_title = process.env.book_title;
+const book_isbn = process.env.book_isbn;
 
 // heredem una classe amb un sol mètode test()
 // emprem this.driver per utilitzar Selenium
@@ -27,11 +28,21 @@ class MyTest extends BaseTest {
         //  boto send .click()
         await this.driver.findElement(By.xpath("//input[@value='Iniciar sessió']")).click();
 
-        //  Afegeix llibre
-        await this.driver.findElement(By.xpath("//a[@href='/admin/biblio/llibre/add/']")).click();
+        //  Entra a la secció de llibres i buscar llibre que vol esborrar
+        await this.driver.findElement(By.xpath("//a[text()='Llibres']")).click();
 
-        await this.driver.findElement(By.name("titol")).sendKeys(book_title);
-        await this.driver.findElement(By.xpath("//input[@value='Desar']")).click();
+        await this.driver.findElement(By.id("searchbar")).sendKeys(book_isbn);
+
+        await this.driver.sleep(1000);
+        await this.driver.findElement(By.xpath("//input[@value='Cerca']")).click();
+
+        await this.driver.sleep(1000);
+        // Find the <a> inside the first <tr> and click it
+        await this.driver.findElement(By.xpath("//table[@id='result_list']/tbody/tr[1]//a")).click();
+
+        //  Esborra llibre
+        await this.driver.findElement(By.xpath("//a[contains(@class, 'deletelink')]")).click();
+        await this.driver.findElement(By.xpath("//input[@type='submit']")).click();
 
         //  cerrar sessió
         await this.driver.sleep(1000);
